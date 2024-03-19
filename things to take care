@@ -1,16 +1,3 @@
 Line no 31 matrix.go 
 matrixnoalloc constructor problem
 
-
-    Matrix(uint64_t rows, uint64_t cols) {
-        Rows = rows;
-        Cols = cols;
-        // Initialize Data with appropriate size
-        Data.resize(rows * cols);
-    }
-
-    Matrix(uint64_t rows, uint64_t cols, std::vector<Elem> data) {
-        Rows = rows;
-        Cols = cols;
-        Data = data;
-    }
