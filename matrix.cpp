@@ -11,6 +11,19 @@ public:
     uint64_t Cols;
     std::vector<Elem> Data;
 
+    Matrix(uint64_t rows, uint64_t cols) {
+        Rows = rows;
+        Cols = cols;
+        // Initialize Data with appropriate size
+        Data.resize(rows * cols);
+    }
+
+    Matrix(uint64_t rows, uint64_t cols, std::vector<Elem> data) {
+        Rows = rows;
+        Cols = cols;
+        Data = data;
+    }
+
     uint64_t Size() {
         return Rows * Cols;
     }
@@ -22,21 +35,25 @@ public:
         }
         return out;
     }
+
+    void Concat(Matrix& b) {
+        if (Cols == 0 && Rows == 0) {
+            Cols = b.Cols;
+            Rows = b.Rows;
+            Data = b.Data;
+            return;
+        }
+        if (Cols != b.Cols) {
+            cout << Rows << "-by-" << Cols << " vs. " << b.Rows << "-by-" << b.Cols << endl;
+            throw runtime_error("Dimension mismatch");
+        }
+        Rows += b.Rows;
+        Data.insert(Data.end(), b.Data.begin(), b.Data.end());
+    }
     
     void AppendZeros(uint64_t n) {
-        Concat(MatrixZeros(n, 1));
-    }
-
-    Matrix(uint64_t rows, uint64_t cols) {
-        Rows = rows;
-        Cols = cols;
-        Data.resize(rows * cols);
-    }
-
-    Matrix(uint64_t rows, uint64_t cols, std::vector<Elem> data) {
-        Rows = rows;
-        Cols = cols;
-        Data = data;
+        Matrix zeros = MatrixZeros(n, 1);
+        Concat(zeros);
     }
 
     void ReduceMod(uint64_t p) {
@@ -158,20 +175,6 @@ public:
         Data = out.Data;
     }
 
-    void Concat(Matrix& b) {
-        if (Cols == 0 && Rows == 0) {
-            Cols = b.Cols;
-            Rows = b.Rows;
-            Data = b.Data;
-            return;
-        }
-        if (Cols != b.Cols) {
-            std::cout << Rows << "-by-" << Cols << " vs. " << b.Rows << "-by-" << b.Cols << std::endl;
-            throw std::runtime_error("Dimension mismatch");
-        }
-        Rows += b.Rows;
-        Data.insert(Data.end(), b.Data.begin(), b.Data.end());
-    }
 
     void Print() {
         std::cout << Rows << "-by-" << Cols << " matrix:" << std::endl;
