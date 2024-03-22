@@ -7,24 +7,6 @@
 // CONVERT MATRIX.GO INTO CPP and CREATE HEADER FILE AND IMPORT INTO THIS FILE
 // SIMILARLY DO FOR UTILS.Go
 
-
-uint64_t Reconstruct_from_base_p(uint64_t p, const std::vector<uint64_t>& vals) {
-    uint64_t res = 0;
-    uint64_t coeff = 1;
-    for (auto v : vals) {
-        res += coeff * v;
-        coeff *= p;
-    }
-    return res;
-}
-
-uint64_t Base_p(uint64_t p, uint64_t m, uint64_t i) {
-    for (uint64_t j = 0; j < i; j++) {
-        m /= p;
-    }
-    return (m % p);
-}
-
 uint64_t ReconstructElem(const std::vector<uint64_t>& vals, uint64_t index, const DBinfo& info) {
     uint64_t q = 1ULL << info.Logq; // Use 1ULL for 64-bit unsigned literal
 
@@ -71,7 +53,7 @@ public:
           X(x), P(p), Logq(logq), Basis(basis), Squishing(squishing), Cols(cols) {}
 };
 
-class Matrix;
+
 
 class Database {
 public:
@@ -144,7 +126,7 @@ public:
 
 // Assuming Num_DB_entries returns a std::tuple<uint64_t, uint64_t, uint64_t>
 // The third return value is ignored in this context, similar to the original Go code
-std::tuple<uint64_t, uint64_t, uint64_t> Num_DB_entries(uint64_t N, uint64_t row_length, uint64_t p);
+
 
 std::tuple<uint64_t, uint64_t> ApproxSquareDatabaseDims(uint64_t N, uint64_t row_length, uint64_t p) {
     auto [db_elems, elems_per_entry, _] = Num_DB_entries(N, row_length, p);
@@ -160,9 +142,6 @@ std::tuple<uint64_t, uint64_t> ApproxSquareDatabaseDims(uint64_t N, uint64_t row
     return std::make_tuple(l, m);
 }
 
-std::tuple<uint64_t, uint64_t, uint64_t> Num_DB_entries(uint64_t N, uint64_t row_length, uint64_t p);
-
-std::tuple<uint64_t, uint64_t> ApproxSquareDatabaseDims(uint64_t N, uint64_t row_length, uint64_t p);
 
 std::tuple<uint64_t, uint64_t> ApproxDatabaseDims(uint64_t N, uint64_t row_length, uint64_t p, uint64_t lower_bound_m) {
     auto [l, m] = ApproxSquareDatabaseDims(N, row_length, p);
@@ -183,7 +162,7 @@ std::tuple<uint64_t, uint64_t> ApproxDatabaseDims(uint64_t N, uint64_t row_lengt
 }
 
 
-std::tuple<uint64_t, uint64_t, uint64_t> Num_DB_entries(uint64_t Num, uint64_t row_length, uint64_t P);
+
 
 Database* SetupDB(uint64_t Num, uint64_t row_length, const Params* p) {
     if (Num == 0 || row_length == 0) {
@@ -228,7 +207,7 @@ Database* SetupDB(uint64_t Num, uint64_t row_length, const Params* p) {
 
 Database* MakeRandomDB(uint64_t Num, uint64_t row_length, const Params* p) {
     Database* D = SetupDB(Num, row_length, p);
-    D->Data = Matrix::Rand(p->L, p->M, 0, p->P); // Generate a random matrix
+    D->Data = MatrixRand(p->L, p->M, 0, p->P); // Generate a random matrix
 
     // Map DB elems to [-p/2; p/2]
     D->Data->Sub(p->P / 2);
@@ -238,7 +217,7 @@ Database* MakeRandomDB(uint64_t Num, uint64_t row_length, const Params* p) {
 
 Database* MakeDB(uint64_t Num, uint64_t row_length, const Params* p, const std::vector<uint64_t>& vals) {
     Database* D = SetupDB(Num, row_length, p);
-    D->Data = Matrix::Zeros(p->L, p->M);
+    D->Data = MatrixZeros(p->L, p->M);
 
     if (vals.size() != Num) {
         delete D; // Cleanup before throwing
