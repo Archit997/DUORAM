@@ -1,4 +1,6 @@
 #include "pir.h"
+#include  "params.h"
+#include "database.h"
 #include <iostream>
 #include <string>
 #include <cstdint>

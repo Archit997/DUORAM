@@ -24,6 +24,7 @@ public:
     uint64_t P;     // plaintext modulus
 
     // Constructor for initializing the Params
+    Params();
     Params(uint64_t n, double sigma, uint64_t l, uint64_t m, uint64_t logq, uint64_t p);
 
     // Methods
