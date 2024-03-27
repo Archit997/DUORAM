@@ -287,24 +287,4 @@ void matMulVec(Matrix& out, Matrix& a, Matrix& b) {
     }
 }
 
-int main() {
-    // Example usage
-    Matrix a = MatrixNew(2, 2);
-    a.Data[0].val = 1;
-    a.Data[1].val = 2;
-    a.Data[2].val = 3;
-    a.Data[3].val = 4;
-
-    Matrix b = MatrixNew(2, 2);
-    b.Data[0].val = 5;
-    b.Data[1].val = 6;
-    b.Data[2].val = 7;
-    b.Data[3].val = 8;
-
-    Matrix c = MatrixMul(a, b);
-    c.Print();
-
-    return 0;
-}
-
 
