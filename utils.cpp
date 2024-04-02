@@ -1,21 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
-
-class Matrix {
-public:
-    // Define your Matrix class here
-    // Include necessary methods and properties
-};
-
-class PRGKey {
-public:
-    // Define your PRGKey class here
-    // Include necessary methods and properties
-};
+//Include header files for Matrix and PRGKey
 
 class State {
 public:
-    std::vector<Matrix*> data;
+    vector<Matrix*> data;
 };
 
 class CompressedState {
@@ -25,7 +14,7 @@ public:
 
 class Msg {
 public:
-    std::vector<Matrix*> data;
+    vector<Matrix*> data;
     
     uint64_t Size() {
         uint64_t sz = 0;
@@ -49,7 +38,7 @@ public:
     }
 };
 
-State MakeState(std::vector<Matrix*> elems) {
+State MakeState(vector<Matrix*> elems) {
     State st;
     for (auto elem : elems) {
         st.data.push_back(elem);
@@ -63,7 +52,7 @@ CompressedState MakeCompressedState(PRGKey* elem) {
     return st;
 }
 
-Msg MakeMsg(std::vector<Matrix*> elems) {
+Msg MakeMsg(vector<Matrix*> elems) {
     Msg msg;
     for (auto elem : elems) {
         msg.data.push_back(elem);
@@ -71,7 +60,7 @@ Msg MakeMsg(std::vector<Matrix*> elems) {
     return msg;
 }
 
-MsgSlice MakeMsgSlice(std::vector<Msg> elems) {
+MsgSlice MakeMsgSlice(vector<Msg> elems) {
     MsgSlice slice;
     for (auto elem : elems) {
         slice.data.push_back(elem);
@@ -86,7 +75,7 @@ uint64_t Base_p(uint64_t p, uint64_t m, uint64_t i) {
     return (m % p);
 }
 
-uint64_t Reconstruct_from_base_p(uint64_t p, std::vector<uint64_t> vals) {
+uint64_t Reconstruct_from_base_p(uint64_t p, vector<uint64_t> vals) {
     uint64_t res = 0;
     uint64_t coeff = 1;
     for (auto v : vals) {
@@ -101,7 +90,7 @@ uint64_t Compute_num_entries_base_p(uint64_t p, uint64_t log_q) {
     return ceil(log_q / log_p);
 }
 
-std::tuple<uint64_t, uint64_t, uint64_t> Num_DB_entries(uint64_t N, uint64_t row_length, uint64_t p) {
+tuple<uint64_t, uint64_t, uint64_t> Num_DB_entries(uint64_t N, uint64_t row_length, uint64_t p) {
     if (row_length <= log2(p)) {
         uint64_t logp = log2(p);
         uint64_t entries_per_elem = logp / row_length;
@@ -117,7 +106,7 @@ std::tuple<uint64_t, uint64_t, uint64_t> Num_DB_entries(uint64_t N, uint64_t row
     return std::make_tuple(N * ne, ne, 0);
 }
 
-double avg(std::vector<double> data) {
+double avg(vector<double> data) {
     double sum = 0.0;
     double num = 0.0;
     for (auto elem : data) {
@@ -127,7 +116,7 @@ double avg(std::vector<double> data) {
     return sum / num;
 }
 
-double stddev(std::vector<double> data) {
+double stddev(vector<double> data) {
     double avg_val = avg(data);
     double sum = 0.0;
     double num = 0.0;
